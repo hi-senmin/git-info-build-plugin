@@ -1,0 +1,6 @@
+
+.vscode
+dist
+templates
+node_modules
+./index.js
