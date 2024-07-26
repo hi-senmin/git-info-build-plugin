@@ -11,6 +11,8 @@ function getOptions(op = {}) {
     tag: true,
     htmlFile: 'index.html',
     globalVarName: '__PROJECT_VERSION_INFO__',
+    console: true,
+
     ...op,
   };
 }
@@ -34,13 +36,20 @@ function getGitBranchAndCommit(hash, time, branch, tag) {
     });
     return data;
   } catch (error) {
-    console.error('\n\n\nFailed to retrieve Git branch and commit:', error);
+    console.error('\n\n\nFailed to retrieve Git branch and commit:');
     return null; // 或者抛出一个错误
   }
 }
 
-function getScriptCode(globalVarName, info) {
-  return `window.${globalVarName} = ${info}`;
+function getScriptCode(globalVarName, info, console) {
+  let content = ``;
+  if (globalVarName) {
+    content = `window.${globalVarName} = ${info};`;
+  }
+  if (console) {
+    content += `console.info("[git-info] ", ${globalVarName ? `window.${globalVarName}` : info});`;
+  }
+  return content;
 }
 
 class WebpackPluginGitInfoInject {
@@ -49,13 +58,17 @@ class WebpackPluginGitInfoInject {
   }
 
   setInjectedHtml(compilation) {
-    const { hash, time, branch, tag, htmlFile, globalVarName } = this.options;
+    const { hash, time, branch, tag, htmlFile, globalVarName, console } = this.options;
     // 找到并修改index.html文件
     const htmlContent = compilation.assets[htmlFile].source();
 
     const info = getGitBranchAndCommit(hash, time, branch, tag);
 
-    const injectedHtml = `${htmlContent} <script>${getScriptCode(globalVarName, info)}</script>`;
+    const injectedHtml = `${htmlContent} <script>${getScriptCode(
+      globalVarName,
+      info,
+      console,
+    )}</script>`;
     // 更新assets中的index.html
     // eslint-disable-next-line no-param-reassign
     compilation.assets['index.html'] = {
@@ -92,13 +105,13 @@ class Webpack3PluginGitInfoInject extends WebpackPluginGitInfoInject {
 }
 
 function vitePluginGitInfoInject(options = {}) {
-  const { hash, time, branch, tag, globalVarName } = getOptions(options);
+  const { hash, time, branch, tag, globalVarName, console } = getOptions(options);
 
   return {
     name: 'vite-plugin-git-info-inject',
     transformIndexHtml(html) {
       const info = getGitBranchAndCommit(hash, time, branch, tag);
-      const code = getScriptCode(globalVarName, info);
+      const code = getScriptCode(globalVarName, info, console);
       if (info) {
         return [
           {
@@ -114,7 +127,7 @@ function vitePluginGitInfoInject(options = {}) {
 }
 
 module.exports = {
+  vitePluginGitInfoInject, // 放后面会导致 vite4+ 报错！！
   WebpackPluginGitInfoInject,
   Webpack3PluginGitInfoInject,
-  vitePluginGitInfoInject,
 };
