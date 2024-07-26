@@ -36,6 +36,7 @@ const { WebpackPluginGitInfoInject, /* Webpack3PluginGitInfoInject */ } = requir
     "time": true,
     "branch": true,
     "tag": true,
+    "console": true,
     "htmlFile": "index.html",
     "globalVarName": "__PROJECT_VERSION_INFO__",
   }
@@ -48,7 +49,8 @@ const { WebpackPluginGitInfoInject, /* Webpack3PluginGitInfoInject */ } = requir
 - branch 分支信息，如果有
 - tag  HEAD 节点上有的tag信息
 - htmlFile 插入的html文件信息
-- globalVarName  插件html中的全局变量名
+- globalVarName  插件html中的全局变量名,可为空
+- console  是否控制台输出
 
 
 ### 示例
