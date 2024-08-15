@@ -15,7 +15,7 @@ function getOptions(op = {}) {
     globalVarName: '__PROJECT_VERSION_INFO__',
     console: true,
 
-    outFile: '_version.txt',
+    outFile: '', // _version.txt
     buildTime: true,
     ...op,
   };

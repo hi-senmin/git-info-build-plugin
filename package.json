@@ -1,6 +1,6 @@
 {
   "name": "git-info-build-plugin",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "description": "构建插入git信息工具",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,8 @@
     "index.js"
   ],
   "keywords": [
+    "git",
+    "html",
     "gitInfo",
     "build",
     "vite",
