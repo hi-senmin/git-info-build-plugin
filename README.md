@@ -107,4 +107,4 @@ module.exports = {
 <script>window.__PROJECT_VERSION_INFO__ = {"commitHash":"xxxxxxxxxxxxxxxxxxxx","commitTime":"2024-08-15 14:50:13","gitBranch":"xxx-xxx","gitTag":"xx-xx"};console.info("[git-info] ", window.__PROJECT_VERSION_INFO__);</script>
 ```
 
-- 带有 outFile 则会在对应dist文件夹内新建一个 文件内容，内容和上诉一致
+- 带有 outFile 则会在对应dist文件夹内新建一个 文件内容，内容和上述一致
