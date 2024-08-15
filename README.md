@@ -39,6 +39,9 @@ const { WebpackPluginGitInfoInject, /* Webpack3PluginGitInfoInject */ } = requir
     "console": true,
     "htmlFile": "index.html",
     "globalVarName": "__PROJECT_VERSION_INFO__",
+
+    "outFile": "", // _version.txt 默认不输出
+    "buildTime": true,
   }
 ```
 
@@ -51,6 +54,9 @@ const { WebpackPluginGitInfoInject, /* Webpack3PluginGitInfoInject */ } = requir
 - htmlFile 插入的html文件信息
 - globalVarName  插件html中的全局变量名,可为空
 - console  是否控制台输出
+
+- outFile 在build dist文件夹中输入一个文件，为空则不输出
+- buildTime  构建时间点
 
 
 ### 示例
@@ -79,3 +85,26 @@ module.exports = {
     config.plugins.push(...[new WebpackPluginGitInfoInject(options)]);
   },
 ```
+
+
+### 默认输出
+
+- console 控制台 输出日志
+
+```
+[git-info] {
+    "commitHash": "xxxxxxxxxxxxxxxxxxxx",
+    "commitTime": "2024-08-15 14:50:13",
+    "gitBranch": "xxx-xxx",
+    "gitTag": "xx-xx",
+    "buildTime": "2024/8/15 5:34:30"
+}
+```
+
+- html文件新增脚本
+
+```
+<script>window.__PROJECT_VERSION_INFO__ = {"commitHash":"xxxxxxxxxxxxxxxxxxxx","commitTime":"2024-08-15 14:50:13","gitBranch":"xxx-xxx","gitTag":"xx-xx"};console.info("[git-info] ", window.__PROJECT_VERSION_INFO__);</script>
+```
+
+- 带有 outFile 则会在对应dist文件夹内新建一个 文件内容，内容和上述一致
