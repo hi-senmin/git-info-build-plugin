@@ -14,7 +14,8 @@ npm i git-info-build-plugin -D
 import { vitePluginGitInfoInject } from 'git-info-build-plugin';
 // or
 
-const { WebpackPluginGitInfoInject, /* Webpack3PluginGitInfoInject */ } = require('git-info-build-plugin');
+const { WebpackPluginGitInfoInject } = require('git-info-build-plugin');
+// const { WebpackPluginGitInfoInject3 } = require('git-info-build-plugin');
 ```
 
 
@@ -63,7 +64,7 @@ const { WebpackPluginGitInfoInject, /* Webpack3PluginGitInfoInject */ } = requir
 ```js
 // vite.config.js
 import vue2 from '@vitejs/plugin-vue2';
-import { vitePluginGitInfoInject } from '@fzs/mocp-tools/lib/plugins';
+import { vitePluginGitInfoInject } from 'git-info-build-plugin';
 
 export default defineConfig({
   base: './',
@@ -77,7 +78,7 @@ export default defineConfig({
 
 ```js
 // vue.config.js / webpack.config.js
-const { WebpackPluginGitInfoInject, /* Webpack3PluginGitInfoInject */ } = require('@fzs/mocp-tools/lib/plugins');
+const { WebpackPluginGitInfoInject, /* Webpack3PluginGitInfoInject */ } = require('git-info-build-plugin');
 
 module.exports = {
   // ...
