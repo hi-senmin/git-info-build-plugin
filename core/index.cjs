@@ -21,14 +21,47 @@ function getOptions(op = {}) {
   };
 }
 
+function normalizeBranchName(branchName) {
+  if (!branchName) {
+    return undefined;
+  }
+
+  const normalizedBranchName = branchName
+    .trim()
+    .replace(/^refs\/heads\//, '')
+    .replace(/^refs\/remotes\//, '')
+    .replace(/^origin\//, '');
+
+  return normalizedBranchName || undefined;
+}
+
+function getBranchName() {
+  const envBranch = [
+    process.env.BRANCH,
+    process.env.BUILD_BRANCH,
+    process.env.CHANGE_BRANCH,
+    process.env.BRANCH_NAME,
+    process.env.GIT_LOCAL_BRANCH,
+    process.env.GIT_BRANCH,
+    process.env.branch,
+    process.env.appVersion,
+  ]
+    .map(normalizeBranchName)
+    .find(Boolean);
+
+  if (envBranch) {
+    return envBranch;
+  }
+
+  return normalizeBranchName(execSync('git branch --show-current').toString());
+}
+
 function getGitBranchAndCommit({ hash, time, branch, tag, buildTime: bTime }) {
   try {
     const commitHash = hash ? execSync('git rev-parse HEAD').toString().trim() : undefined;
     const commitTime = time ? execSync(`git log -1 --format='%ci'`).toString().trim() : undefined;
 
-    const gitBranch = branch
-      ? execSync('git rev-parse --abbrev-ref HEAD').toString().trim()
-      : undefined;
+    const gitBranch = branch ? getBranchName() : undefined;
 
     const gitTag = tag ? execSync('git tag --points-at HEAD').toString().trim() : undefined;
     const buildTime = bTime ? new Date().toLocaleString() : undefined;
